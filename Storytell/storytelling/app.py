@@ -1,20 +1,27 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import pandas as pd
+
+def load_data():
+    data = pd.read_csv(
+        "./data/micro_world(1).csv",
+        encoding='ISO-8859-1'
+    )
+    return data
 
 # Data Story
-introduction = """
-In recent years, the Philippines has experienced significant growth in digital financial services. One area of interest is the adoption of digital payments for utility bills. In this data, we explore the trends in digital payments for utility bills before and after the onset of the COVID-19 pandemic.
+def introduction():
+    st.markdown("""
+    In recent years, the Philippines has experienced significant growth in digital financial services. One area of interest is the adoption of digital payments for utility bills. In this data, we explore the trends in digital payments for utility bills before and after the onset of the COVID-19 pandemic.
 
-1. Setting the Stage: Pre-COVID Trends
-Before diving into the pandemic's impact, let's understand the landscape of digital payments for utility bills leading up to 2020. Analyzing data from 2019 and 2020 reveals a steady increase in the prevalence of digital payments. In 2019, digital payments accounted for 20% of all utility bill payments, and by 2020, this figure had risen to 30%. This upward trend suggests a growing acceptance and adoption of digital payment methods in the Philippines.
+    1. Setting the Stage: Pre-COVID Trends
+    Before diving into the pandemic's impact, let's understand the landscape of digital payments for utility bills leading up to 2020. Analyzing data from 2019 and 2020 reveals a steady increase in the prevalence of digital payments. In 2019, digital payments accounted for 20% of all utility bill payments, and by 2020, this figure had risen to 30%. This upward trend suggests a growing acceptance and adoption of digital payment methods in the Philippines.
 
-2. The Pandemic Effect: Post-COVID Trends
-As the COVID-19 pandemic swept across the globe in 2020, it brought about unprecedented changes in consumer behavior, including how people make payments. In the Philippines, the pandemic accelerated the shift towards digital channels. Analysis of data from 2021 indicates a notable increase in the prevalence of digital payments for utility bills. Post-COVID, digital payments surged to 40% of all utility bill payments, marking a significant leap from pre-pandemic levels.
+    2. The Pandemic Effect: Post-COVID Trends
+    As the COVID-19 pandemic swept across the globe in 2020, it brought about unprecedented changes in consumer behavior, including how people make payments. In the Philippines, the pandemic accelerated the shift towards digital channels. Analysis of data from 2021 indicates a notable increase in the prevalence of digital payments for utility bills. Post-COVID, digital payments surged to 40% of all utility bill payments, marking a significant leap from pre-pandemic levels.
 
-3. Visualizing the Transition: Line Plot Analysis
-Visualizing the data through line plots provides a clear depiction of the transition in digital payment trends over time. Before COVID-19, the line representing digital payments for utility bills shows a gradual but consistent upward trajectory. However, post-COVID, there is a steep ascent in the prevalence of digital payments, indicating a rapid adoption of digital channels in response to the pandemic's disruptions.
-"""
-
+    3. Visualizing the Transition: Line Plot Analysis
+    """)
 conclusion = """
 The evolution of digital payments for utility bills in the Philippines provides a compelling narrative of resilience, adaptation, and transformation. As the country navigates the post-pandemic era, understanding and leveraging these trends will be crucial in shaping a more robust and inclusive financial ecosystem.
 
@@ -22,7 +29,8 @@ This data story encapsulates the journey of digital payments in the Philippines,
 """
 
 # Visualization
-def plot_data():
+def plot_data(df):
+    filtered_df = df[df['economy'] == 'Philippines'] 
     years = [2019, 2020, 2021]
     pre_covid_digital_payments = [0.2, 0.3, 0.4]
     post_covid_digital_payments = [0.4, 0.5, 0.6]
@@ -41,11 +49,20 @@ def plot_data():
 
 st.title("Evolution of Digital Payments for Utility Bills in the Philippines")
 
-# Button to show Introduction
-if st.button("Introduction"):
-    st.write(introduction)
-    plot_data()
+# Load data
+df = load_data()
 
-# Button to show Conclusion
-if st.button("Conclusion"):
-    st.write(conclusion)
+# Define the main menu
+list_of_pages = [
+    "Introduction",
+    "Conclusion",
+]
+
+st.sidebar.title(':scroll: Main Menu')
+selection = st.sidebar.radio("Go to: ", list_of_pages)
+
+if selection == "Introduction":
+    introduction()
+
+elif selection == "Conclusion":
+    st.markdown(conclusion)
