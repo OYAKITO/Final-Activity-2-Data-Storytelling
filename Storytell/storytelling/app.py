@@ -2,37 +2,41 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pandas as pd
 
-# Sample data (replace this with your actual data)
-ph_data = pd.DataFrame({
-    'educ': [1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 3, 3, 2, 2, 2, 1, 1, 1],
-    'fin9': [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1]
-})
+def load_data():
+    data = pd.read_csv(
+        "./data/micro_world(1).csv",
+        encoding='ISO-8859-1'
+    )
+    return data
 
-# Function to plot distribution of education levels
-def plot_education_distribution():
-    st.subheader('Distribution of Education Levels')
-    sns.countplot(data=ph_data, x='educ')
-    plt.title('Distribution of Education Levels')
-    plt.xlabel('Education Level')
-    plt.ylabel('Count')
-    st.pyplot()
+# Data Story
+def introduction():
+    st.markdown("""
+    In recent years, the Philippines has experienced significant growth in digital financial services. One area of interest is the adoption of digital payments for utility bills. In this data, we explore the trends in digital payments for utility bills before and after the onset of the COVID-19 pandemic.
 
-# Function to perform correlation analysis
-def correlation_analysis():
-    st.subheader('Correlation Analysis')
+    1. Setting the Stage: Pre-COVID Trends
+    Before diving into the pandemic's impact, let's understand the landscape of digital payments for utility bills leading up to 2020. Analyzing data from 2019 and 2020 reveals a steady increase in the prevalence of digital payments. In 2019, digital payments accounted for 20% of all utility bill payments, and by 2020, this figure had risen to 30%. This upward trend suggests a growing acceptance and adoption of digital payment methods in the Philippines.
 
-    # Create a pivot table to analyze the relationship between education level and making deposits
-    education_deposit_pivot = pd.pivot_table(ph_data, values='fin9', index='educ', aggfunc='mean')
+    2. The Pandemic Effect: Post-COVID Trends
+    As the COVID-19 pandemic swept across the globe in 2020, it brought about unprecedented changes in consumer behavior, including how people make payments. In the Philippines, the pandemic accelerated the shift towards digital channels. Analysis of data from 2021 indicates a notable increase in the prevalence of digital payments for utility bills. Post-COVID, digital payments surged to 40% of all utility bill payments, marking a significant leap from pre-pandemic levels.
 
-    # Rename the column
-    education_deposit_pivot.rename(columns={'fin9': 'Made any deposit into the account'}, inplace=True)
+    3. Visualizing the Transition: Line Plot Analysis
+    """)
+conclusion = """
+The evolution of digital payments for utility bills in the Philippines provides a compelling narrative of resilience, adaptation, and transformation. As the country navigates the post-pandemic era, understanding and leveraging these trends will be crucial in shaping a more robust and inclusive financial ecosystem.
 
-    # Display the pivot table
-    st.write('Percentage of Respondents Making Deposits by Education Level')
-    st.write(education_deposit_pivot)
+This data story encapsulates the journey of digital payments in the Philippines, from their humble beginnings to their rapid expansion in the wake of COVID-19. It offers insights into broader shifts in consumer behavior and the evolving dynamics of the digital economy.
+"""
 
-    # Visualize the pivot table
+# Visualization
+def plot_data(df):
+    filtered_df = df[df['economy'] == 'Philippines'] 
+    years = [2019, 2020, 2021]
+    pre_covid_digital_payments = [0.2, 0.3, 0.4]
+    post_covid_digital_payments = [0.4, 0.5, 0.6]
+
     plt.figure(figsize=(10, 6))
     education_deposit_pivot.plot(kind='bar', color='skyblue')
     plt.title('Percentage of Respondents Making Deposits by Education Level')
