@@ -75,11 +75,6 @@ def main():
     # Methodology section
     elif choice == 'Methodology':
         st.subheader('Methodology')
-        st.markdown("""
-            - We began by examining the distribution of educational levels among respondents.
-            - Next, we investigated the correlation between education levels and financial inclusion indicators.
-            - Finally, we analyzed findings to derive actionable insights.
-        """)
         st.image('./Methology/Method.png', use_column_width=True)
 
     # Findings section
